@@ -1,9 +1,10 @@
 import './styles.css';
 import MenuLateral from "../../components/MenuLateral/MenuLateral";
 import Cabecalho from '../../components/Cabecalho/Cabecalho';
-import FormularioCliente from '../../components/FormularioCliente/FormularioCLiente';
+import FormularioCobranca from '../../components/FormularioCobranca/FormularioCobranca';
 
-function Clientes() {
+function Cobrancas() {
+
   return (
     <div className='container'>
       <div className='menu-lateral'>
@@ -16,9 +17,9 @@ function Clientes() {
         <div className='container-titulo-e-form'>
           <div className='container-form-cliente'>
             <h4 className='titulo-form'>
-              {'//'} ADICIONAR CLIENTES
+              {'//'} ADICIONAR COBRANCA
             </h4>
-            <FormularioCliente />
+            <FormularioCobranca />
           </div>
         </div>
       </div>
@@ -27,4 +28,4 @@ function Clientes() {
   )
 }
 
-export default Clientes;
+export default Cobrancas;

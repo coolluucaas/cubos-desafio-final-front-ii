@@ -1,6 +1,6 @@
 import './styles.css';
-import { useContext, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Backdrop, CircularProgress, Snackbar } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Alert } from '@material-ui/lab';
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function FormularioCliente() {
+function EditarCliente({ cliente, setMostrarPerfilCliente, atualizarCards, setAtualizarCards }) {
 
   const [nomeCliente, setNomeCliente] = useState('');
   const [emailCliente, setEmailCliente] = useState('');
@@ -27,15 +27,13 @@ function FormularioCliente() {
   const [cidadeCliente, setCidadeCliente] = useState('');
   const [complementoCliente, setComplementoCliente] = useState('');
   const [ptRefCliente, setPtRefCliente] = useState('');
-  const [sucessoCliente, setSucessoCliente] = useState('');
+  const [idCliente, setIdCliente] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
+  const [sucessoCliente, setSucessoCliente] = useState('');
   const history = useHistory();
   const classes = useStyles();
   const { tokenStorage } = useContext(ContextoDeAutorizacao);
-  let rua = ''
-  let bairro = ''
-  let cidade = ''
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -67,9 +65,9 @@ function FormularioCliente() {
       cpf_cliente: cpfCliente,
       telefone_cliente: telefoneCliente,
       cep: cepCliente,
-      logradouro: (logradouroCliente || rua),
-      bairro: (bairroCliente || bairro),
-      cidade: (cidadeCliente || cidade),
+      logradouro: logradouroCliente,
+      bairro: bairroCliente,
+      cidade: cidadeCliente,
       complemento: complementoCliente,
       referencia: ptRefCliente
     };
@@ -78,8 +76,9 @@ function FormularioCliente() {
     setCarregando(true);
 
     try {
-      const resposta = await fetch('https://api-cubos-cobranca.herokuapp.com/cliente', {
-        method: "POST",
+      const id = idCliente
+      const resposta = await fetch(`https://api-cubos-cobranca.herokuapp.com/cliente/${id}`, {
+        method: "PUT",
         body: JSON.stringify(dadosFormCliente),
         headers: {
           "Content-type": "application/json",
@@ -95,9 +94,10 @@ function FormularioCliente() {
         setErro(dados);
         return;
       }
-
+      
+      setAtualizarCards(!atualizarCards)
       if (resposta.ok) {
-        setSucessoCliente('Cliente cadastrado com sucesso.');
+        setSucessoCliente('Cliente atualizado com sucesso.');
         setTimeout(() => {
           history.push('/listar-clientes');
         }, 2000);
@@ -105,6 +105,8 @@ function FormularioCliente() {
     } catch (error) {
       setErro(error.message);
     }
+
+    e.preventDefault();
 
   }
 
@@ -122,6 +124,7 @@ function FormularioCliente() {
     }
 
     setSucessoCliente(false);
+    setMostrarPerfilCliente(false)
   };
 
   async function carregarDadosPeloCEP(cep) {
@@ -129,12 +132,12 @@ function FormularioCliente() {
     setBairroCliente('')
     setLogradouroCliente('')
     setCidadeCliente('')
-
+    
     let cepTratado = cep
 
     if (cepTratado.length === 8 && cepTratado.indexOf('-') === -1) {
       cepTratado = cep.substr(0, 5) + '-' + cep.substr(5, 7)
-      /*console.log(cepTratado)*/
+      /*console.log("teste", cepTratado)*/
     }
     setCepCliente(cepTratado)
     if (cepTratado.length === 9) {
@@ -143,6 +146,7 @@ function FormularioCliente() {
       setCidadeCliente(dados.localidade)
       setBairroCliente(dados.bairro)
       setLogradouroCliente(dados.logradouro)
+      /*console.log("teste 2", cidadeCliente, bairroCliente, logradouroCliente)*/
      /*  rua = dados.logradouro
       bairro = dados.bairro
       cidade = dados.localidade
@@ -151,20 +155,28 @@ function FormularioCliente() {
 
   }
 
-  /* useEffect(() => {
+  function voltarParaLista() {    
+    setAtualizarCards(!atualizarCards)
+    setMostrarPerfilCliente(false)
+  }
 
-    setCidadeCliente('');
-    setBairroCliente('');
-    setLogradouroCliente('');
-      
-    if(cepCliente.length === 9) {      
-     carregarDadosPeloCEP(cepCliente);
-    }
-
-  }, [cepCliente]); */
+  useEffect(() => {
+    setNomeCliente(cliente.nome_cliente);
+    setEmailCliente(cliente.email_cliente);
+    setCpfCliente(cliente.cpf_cliente);
+    setTelefoneCliente(cliente.telefone_cliente);
+    setCepCliente(cliente.cep);
+    setLogradouroCliente(cliente.logradouro);
+    setBairroCliente(cliente.bairro);
+    setCidadeCliente(cliente.cidade);
+    setComplementoCliente(cliente.complemento);
+    setPtRefCliente(cliente.referencia);
+    setIdCliente(cliente.id_cliente)
+  }, [cliente])
 
   return (
     <form className='form-clientes' onSubmit={(e) => onSubmit(e)}>
+      <p className='btn-fechar-2' onClick={voltarParaLista}>X</p>
       <div className='form-clientes-pt-1'>
         <label htmlFor='nomeCliente'>Nome</label>
         <input id='nomeCliente' type='text' value={nomeCliente} onChange={(e) => setNomeCliente(e.target.value)} />
@@ -194,8 +206,8 @@ function FormularioCliente() {
         </div>
       </div>
       <div className='form-clientes-pt-3'>
-        <Link className='btn-cancelar' to='/listar-clientes'>Cancelar</Link>
-        <button className='btn-submit' type='submit'>Adicionar Cliente</button>
+        <div className='btn-cancelar' onClick={voltarParaLista}>Cancelar</div>
+        <button className='btn-submit' type='submit'>Editar Cliente</button>
       </div>
       <Backdrop className={classes.backdrop} open={carregando} >
         <CircularProgress color="inherit" />
@@ -211,4 +223,4 @@ function FormularioCliente() {
   );
 }
 
-export default FormularioCliente;
+export default EditarCliente;

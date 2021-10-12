@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
+function FormularioPerfil({ mostrarPerfil, setMostrarPerfil, dadosUsuario }) {
   const classes = useStyles();
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -26,17 +26,17 @@ function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
   const [erro, setErro] = useState('');
   const [carregando, setCarregando] = useState(false);
   const [sucesso, setSucesso] = useState('');
-  const {tokenStorage} = useContext(ContextoDeAutorizacao);
+  const { tokenStorage } = useContext(ContextoDeAutorizacao);
 
   useEffect(() => {
-    setNome(dadosUsuario.nome);
-    setEmail(dadosUsuario.email);
-    setCpf(dadosUsuario.cpf);
-    setTelefone(dadosUsuario.telefone);
+    setNome(dadosUsuario.nome_usuario);
+    setEmail(dadosUsuario.email_usuario);
+    setCpf(dadosUsuario.cpf_usuario);
+    setTelefone(dadosUsuario.telefone_usuario);
   }, [dadosUsuario]);
 
   async function onSubmit(e) {
-    
+    e.preventDefault();
     if (!(email || nome)) {
       e.preventDefault();
       setErro('Favor preencher os campos de nome e e-mail.');
@@ -56,23 +56,21 @@ function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
     const dadosForm = {};
 
     if (!senha) {
-      dadosForm.nome = nome
-      dadosForm.email = email
-      dadosForm.telefone = telefone
-      dadosForm.cpf = cpf
+      dadosForm.nome_usuario = nome
+      dadosForm.email_usuario = email
+      dadosForm.telefone_usuario = telefone
+      dadosForm.cpf_usuario = cpf
     } else {
-      dadosForm.nome = nome
-      dadosForm.email = email
+      dadosForm.nome_usuario = nome
+      dadosForm.email_usuario = email
       dadosForm.senha = senha
-      dadosForm.telefone = telefone
-      dadosForm.cpf = cpf
+      dadosForm.telefone_usuario = telefone
+      dadosForm.cpf_usuario = cpf
     }
-
-    console.log(dadosForm)
 
     setErro('');
     setCarregando(true);
-    
+
     const resposta = await fetch('https://api-cubos-cobranca.herokuapp.com/usuario', {
       method: "PUT",
       body: JSON.stringify(dadosForm),
@@ -83,15 +81,16 @@ function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
     });
 
     setCarregando(false);
-
     if (!resposta.ok) {
-      setErro('Deu merda');
+      setErro('Ocorreu um erro! Perfil não atualizado.');
       return;
     }
 
     if (resposta.ok) {
       setSucesso('Perfil atualizado com sucesso.');
-      return;
+      setTimeout(() => {
+        setMostrarPerfil(false);
+      }, 2000);
     }
 
   }
@@ -113,7 +112,7 @@ function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
   };
 
   return (
-    <form className='container-formulario' onSubmit={(e) => onSubmit(e)}> 
+    <form className='container-formulario' onSubmit={(e) => onSubmit(e)}>
       <p className='btn-fechar' onClick={() => setMostrarPerfil(false)}>X</p>
       <h4>{'//'} EDITAR USUÁRIO</h4>
       <label htmlFor='nome'>Nome</label>
@@ -126,9 +125,9 @@ function FormularioPerfil({ setMostrarPerfil, dadosUsuario }) {
         <img className='icone-vista' src={verSenha ? view : noView} alt='icone-olho' onClick={() => setVerSenha(!verSenha)} />
       </div>
       <label htmlFor='cpf'>CPF</label>
-      <InputMask mask='999.999.999-99' id='cpf' maskPlaceholder='222.222.222-22' /*pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"*/ value={cpf} onChange={(e) => setCpf(e.target.value)} />
+      <InputMask mask='999.999.999-99' id='cpf' value={cpf} onChange={(e) => setCpf(e.target.value)} />
       <label htmlFor='telefone'>Telefone</label>
-      <InputMask mask='(99) 99999-9999' id='telefone' maskPlaceholder='(22) 22222-2222' /*pattern="\(\d{2}\) \d{5}-\d{4}"*/ value={telefone} onChange={(e) => setTelefone(e.target.value)} />
+      <InputMask mask='(99) 99999-9999' id='telefone' value={telefone} onChange={(e) => setTelefone(e.target.value)} />
       <button className='btn-submit' type='submit'>Editar conta</button>
       <Backdrop className={classes.backdrop} open={carregando} >
         <CircularProgress color="inherit" />

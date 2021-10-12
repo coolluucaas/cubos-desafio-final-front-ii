@@ -8,6 +8,7 @@
     border-radius: 16px;
     box-shadow: 0px 0px 5px 5px #00000020;
     margin-left: 72px;
+    margin-right: 72px;
 }
 
 .form-clientes input {    
@@ -18,12 +19,13 @@
 
 .form-clientes input::placeholder {
     color: #a5a5a566;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .form-clientes-pt-1 {
     display: flex;
     flex-direction: column;
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 .form-clientes label {
@@ -83,7 +85,7 @@
     width: 530px;
     justify-content: flex-end;
     margin-top: 20px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .form-clientes-pt-3 .btn-cancelar {

@@ -38,10 +38,10 @@ function Cabecalho() {
     const dados = await resposta.json();
 
     setDadosUsuario({
-      nome: dados.nome,
-      email: dados.email,
-      telefone: dados.telefone,
-      cpf: dados.cpf
+      nome_usuario: dados.nome_usuario,
+      email_usuario: dados.email_usuario,
+      telefone_usuario: dados.telefone_usuario,
+      cpf_usuario: dados.cpf_usuario
     });
   }
 
@@ -51,7 +51,7 @@ function Cabecalho() {
   }
 
   return (
-    <div className='container-cabecalho'>
+    <div className='container-cabecalho'> 
       <img className='icone-perfil' src={iconePerfil} alt='icone-perfil' onClick={() => setMostrarPopUp(!mostrarPopUp)} />
       <div className={mostrarPopUp ? 'menu-popup-on' : 'menu-popup-off'} >
         <div className='opcao-menu' onClick={carregarDados}> 
@@ -64,7 +64,7 @@ function Cabecalho() {
         </div>
       </div>
       <Backdrop className={classes.backdrop} open={mostrarPerfil} >
-        <FormularioPerfil setMostrarPerfil={setMostrarPerfil} dadosUsuario={dadosUsuario}/>
+        <FormularioPerfil mostrarPerfil={mostrarPerfil} setMostrarPerfil={setMostrarPerfil} dadosUsuario={dadosUsuario}/>
       </Backdrop>
     </div>
   );

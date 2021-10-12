@@ -1,0 +1,106 @@
+.card-lista {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    margin-right: auto;
+    margin-top: 16px;
+    width: 100%;
+}
+
+.card-lista-dados {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 24px;
+    width: 250px;
+}
+
+.card-lista-nome {
+    font-size: 14px;
+    font-weight: 600;
+    color: #4c4c4c;
+    cursor: pointer;
+}
+
+.card-lista-email {
+    width: 245px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    margin-top: 14px;
+}
+
+.card-lista-email p {
+    margin: 0;
+    margin-left: 9px;
+    padding: 0;    
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.card-lista-telefone {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;    
+    margin-top: 14px;
+    margin-bottom: 16px;
+}
+
+.card-lista-telefone p {
+    margin: 0;
+    margin-left: 9px;
+    padding: 0;
+}
+
+.container-cobranca-feita {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    width: 198px;
+}
+
+.container-cobranca-recebida {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    width: 210px ;
+
+}
+
+.container-status {
+    margin: 0;
+    width: 210px;
+}
+
+.container-btn-editar {
+    margin-right: 70px;
+    cursor: pointer;
+}
+
+.em-dia {
+    font-size: 16px;
+    font-weight: 600;
+    color: #4ec06e;
+}
+
+.inadimplente {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ff4d4d;
+}
+
+abbr {
+    text-decoration: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    margin: 0;
+}

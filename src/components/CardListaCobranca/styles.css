@@ -1,0 +1,73 @@
+.card-lista-cobranca {
+    width: 1020px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.p11 {
+    width: 75px;
+    margin-left: 45px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #4c4c4c;
+    text-align: left;
+}
+
+.p12 {
+    width: 195px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    text-align: left;
+}
+
+.p13 {
+    width: 210px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.p14 {
+    width: 185px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+}
+
+.p15 {
+    width: 200px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #4c4c4c;
+}
+
+.p16 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #4c4c4c;
+    margin-right: auto;
+}
+
+.pago {    
+    color: #4ec06e;
+}
+
+.pendente {
+    color: #5179b5;
+}
+
+.vencida {
+    color: #ff4d4d
+}
+
+abbr {
+    text-decoration: none;
+}
